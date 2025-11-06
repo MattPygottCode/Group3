@@ -7,5 +7,3 @@ hello
 
 Bo is testing push requests
 
-option2
-test123
