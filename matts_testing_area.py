@@ -1,9 +1,13 @@
 #To do list
 # Test with random keys
 # Implement encrypting files
+#write an encrypt to file function that preserves new lines
+
+#imports
+import os
 
 
-
+#Global variables
 global alphabet_upper
 alphabet_upper="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 global alphabet_lower
@@ -103,4 +107,12 @@ def v_cipher_decrypt(g_cipher_text, g_key,verbose=False):
 #temp=v_cipher_encrypt("James walked his dog called Jeremy!","Hjksdhjksahfjhdakjvhuieshdhfjkdvkjhdvkjhkjlahefliu")
 #print(temp)
 #print(v_cipher_decrypt(temp,"Hjksdhjksahfjhdakjvhuieshdhfjkdvkjhdvkjhkjlahefliu"))
+
+file_plain_text=open("/workspaces/Group3/text_files/plain_text.txt","r")
+file_cipher_text=open("/workspaces/Group3/text_files/cipher_text.txt","w")
+
+file_cipher_text.write(caesar_cipher_encrypt(file_plain_text.read(),3))
+
+file_plain_text.close()
+file_cipher_text.close()
 
