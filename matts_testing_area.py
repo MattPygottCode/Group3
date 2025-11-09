@@ -75,9 +75,34 @@ def caesar_cipher_decrypt(g_cipher_text,g_key):
 
 #vigenere cipher
 
+def v_cipher_encrypt(g_plain_text,g_key,verbose=False):
+    plain_text=clean_text(g_plain_text)
+    key=clean_text(g_key,preserve_case=False)
+    cipher_text=""
+
+    #for each letter in plain text message we perform a caesar cipher on it using the ith char in key
+    for i in range (0,len(plain_text)-1):
+        ith_key=alphabet_upper.index(key[i%len(key)])
+        if verbose:
+            print("Ith key is", ith_key)
+        cipher_text+=caesar_cipher_encrypt(plain_text[i],ith_key)
+    return cipher_text
+
+def v_cipher_decrypt(g_cipher_text, g_key):
+    cipher_text=g_cipher_text#assume the cipher text is clean
+    key=clean_text(g_key,preserve_case=False)
+    plain_text=""
+
+    #for each letter in cipher text we decrypt using caesar cipher with key corresponding to the char position
+    for i in range(0, len(cipher_text)-1):
+        ith_key=alphabet_upper.index(key[i%len(key)])
+        plain_text+=caesar_cipher_decrypt(cipher_text[i],ith_key)
+    return plain_text
+
+
 #-------------------testing-------------------
 
 
 
-print(caesar_cipher_encrypt("James walked his dog called Jeremy!",2))
-print(caesar_cipher_decrypt(caesar_cipher_encrypt("James walked his dog called Jeremy!",2),2))
+print(v_cipher_encrypt("James walked his dog called Jeremy!","HELP ME",True))
+print(v_cipher_decrypt(caesar_cipher_encrypt("James walked his dog called Jeremy!","HELP ME"),"HELP ME"))
