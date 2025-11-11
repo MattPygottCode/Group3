@@ -103,16 +103,29 @@ def v_cipher_decrypt(g_cipher_text, g_key,verbose=False):
 
 #-------------------testing-------------------
 
+# -------------------MATT-------------------
+
+# Here, we can read and encrypt the plain text
+# We then put the encrypted outcome into the cipher_text file (which was originally empty)
 
 #temp=v_cipher_encrypt("James walked his dog called Jeremy!","Hjksdhjksahfjhdakjvhuieshdhfjkdvkjhdvkjhkjlahefliu")
 #print(temp)
 #print(v_cipher_decrypt(temp,"Hjksdhjksahfjhdakjvhuieshdhfjkdvkjhdvkjhkjlahefliu"))
 
-file_plain_text=open("/workspaces/Group3/text_files/plain_text.txt","r")
-file_cipher_text=open("/workspaces/Group3/text_files/cipher_text.txt","w")
-
+file_plain_text=open("text_files/plain_text.txt","r")
+file_cipher_text=open("text_files/cipher_text.txt","w")
 file_cipher_text.write(caesar_cipher_encrypt(file_plain_text.read(),3))
+
+# -------------------BO-------------------
+# Here, I'm playing around with printing the encrpyted pain text
+# Rather than creating a new text file, which is probably better practice...
+
+# file_plain_text=open("text_files/plain_text.txt","r")
+# cipher = caesar_cipher_encrypt(file_plain_text.read(), 3)
+# print(cipher)
+
+# -------------------MATT-------------------
+# This is back to Matt's code
 
 file_plain_text.close()
 file_cipher_text.close()
-
