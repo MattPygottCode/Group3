@@ -1,7 +1,7 @@
-#To do list
+# To do list
 # Test with random keys
 # Implement encrypting files
-#write an encrypt to file function that preserves new lines
+# Write an encrypt to file function that preserves new lines
 
 #imports
 import os
