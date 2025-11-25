@@ -1,6 +1,9 @@
 # This file contains functions taken from previous assignments
 # that are needed for the implementation of our hybric cryptography project.
 
+# Import required libraries
+import random
+
 # Take is_prime function from cryptography_functions.py
 def miller_rabin(p,base): 
     '''
@@ -68,7 +71,7 @@ def is_prime(p,num_wit=50):
         num_trials = 0
         while num_trials < num_wit: 
             num_trials = num_trials + 1
-            witness = randint(2,p-2)
+            witness = random.randint(2,p-2)
             if miller_rabin(p,witness) == False: 
                 return False
         return True 
@@ -80,7 +83,7 @@ def random_prime(bit_length):
     of bit_length many (binary) bits 
     '''
     while True:
-        p = SystemRandom().getrandbits(bit_length)  
+        p = random.Random().getrandbits(bit_length)  
         if p >= 2**(bit_length-1):
             if is_prime(p):
                 return p   
