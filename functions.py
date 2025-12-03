@@ -110,3 +110,100 @@ def gcd(a,b):
         return abs(a)                           #Use abs to ensure this is positive
     else:
         return gcd(b,a%b)
+
+# first we take the RSA generator function from the lectures
+def RSA_key_generator(bitlength):
+    """This will generate RSA keys. This is a version of the private key.
+    The output is ((PublicKey), PrivateExp, Factorisation).
+    The PublicKey can be published, PrivateExp is needed to decrypt.
+    Factorisation is not needed, but must be kept secret."""
+    ## Generate two large primes.
+    p = random_prime(bitlength)
+    q = random_prime(bitlength)
+    N = p*q
+    
+    ## Next, get phi and use it to get a public and private exponent.
+    phi = (p-1)*(q-1)
+    ## Choose encryption exponent e randomly between 1 and p and q.
+    e = random.randint(1,min(p,q))
+    ## It must be coprime to phi though. We use rejection sampling again:    
+    while gcd(e,phi) > 1:
+        e = random.randint(1,min(p,q))
+    
+    ## Finally, get d using 'pow'
+    ## (the extended Euclid's algorithm could do this too).
+    d = pow(e,-1,phi)
+    
+    ## Then return the keys.
+    return ((N,e),d%phi,{p:1,q:1})
+
+# we want to easily obtain the public key and private key from our RSA generator
+def public_key_from_RSA(RSA_key):
+    return RSA_key[0]
+
+def private_key_from_RSA(RSA_key):
+    private_key = (public_key_from_RSA(RSA_key)[0],RSA_key[1])
+    return(private_key)
+    
+# we also take the text to integer and integer to text conversion functions from week 8
+def char_to_byte(char): 
+    """
+    Returns the 8 bit binary representation (padded with 
+    leading zeros when necessary) of ord(char), i.e. of 
+    the order of the input character char. 
+    """
+    byte_string = bin(ord(char))[2:]            # The order of char as a binary string 
+    num_zeros = 8 - len(byte_string)            # The number of zeros needed to pad out byte_string
+    byte_string = '0' * num_zeros + byte_string # Now pad out byte_string with num_zeros many zeros
+                                                # to obtain the 8-bit binary representation
+    return byte_string
+    
+# now we create the conversion functions
+def convert_to_integer(text,verbose=False): 
+    """
+    Returns an integer that encodes the input string text. 
+    Each character of text is encoded as a binary string of 
+    8 bits. These strings are concatenated with a leading 1
+    and the resulting binary string is converted into the 
+    returned integer.
+    """
+    bin_string = '1'
+    for letter in text: 
+        bin_string = bin_string + char_to_byte(letter)
+    if verbose: 
+        print("The binary representation of this message is:")
+        print(bin_string)
+    return int(bin_string,2)
+
+# now we create the conversion functions
+def convert_to_text(number): 
+    """ 
+    Returns a string that is the decoding of the input integer number.
+    This is done by converting number to a binary string, removing the 
+    leading character '1', slicing out each 8 bit substring consecutively,
+    converting each such string to the character it encodes and concatenating
+    these characters to obtain the decoded string.    
+    """
+    # Remove '0b1' from the string
+    bin_string = bin(number)[3:]    
+    text = ''                           
+    length = len(bin_string)
+    for i in range(0,length,8):  
+        # Pick out binary strings, 8 bits at a time
+        byte_string = bin_string[i:i+8]   
+        # Convert byte_string to a character before 
+        # appending it to text 
+        text = text + chr(int(byte_string,2))  
+    return text
+
+# lastly, we create an RSA encryption function
+def rsa_encrypt(m, public_key):
+    N, e = public_key
+    # returns c = m^e mod N
+    return pow(m, e ,N)
+
+# and an RSE decryption function
+def rsa_decrypt(c, private_key):
+    N, d = private_key
+    # returns m = c^d mod N
+    return pow(c, d, N)
